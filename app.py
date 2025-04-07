@@ -47,31 +47,31 @@ st.title("☁️ 云朵识别小工具")
 
 uploaded = st.file_uploader("上传一张云朵图片", type=['jpg', 'png'])
 
+
 if uploaded:
     image = Image.open(uploaded)
     st.image(image, caption="上传的图片", use_column_width=True)
 
     if st.button("开始识别"):
         input_tensor = preprocess(image)
-        pred = model.predict(input_tensor)[0]
-        idx = int(np.argmax(pred))
-        label_key = class_keys[idx]
-        label = classes[label_key]
-        confidence = float(pred[idx])
+        
+        # 打印输入张量的形状，查看是否与模型的要求匹配
+        st.write(f"Input tensor shape: {input_tensor.shape}")  # 打印输入张量的形状
+        
+        # 进行预测
+        try:
+            pred = model.predict(input_tensor)[0]
+            idx = int(np.argmax(pred))
+            label_key = class_keys[idx]
+            label = classes[label_key]
+            confidence = float(pred[idx])
 
-        st.success(f"识别结果：{label}（{label_key}）")
-        st.write(f"置信度：{confidence*100:.2f}%")
+            st.success(f"识别结果：{label}（{label_key}）")
+            st.write(f"置信度：{confidence*100:.2f}%")
+        except Exception as e:
+            st.error(f"发生错误: {str(e)}")
 
-        if st.button("⭐ 收藏这张图片"):
-            favs = load_favorites()
-            favs.append({
-                "label": label,
-                "code": label_key,
-                "confidence": round(confidence, 2),
-                "image_name": uploaded.name
-            })
-            save_favorites(favs)
-            st.toast("✅ 已添加到收藏夹")
+
 
 # 收藏夹
 with st.expander("📂 查看收藏夹"):
