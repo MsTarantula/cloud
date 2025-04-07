@@ -81,7 +81,7 @@ if uploaded:
     st.toast("✅ 已添加到收藏夹")
         
         # 打印输入张量的形状，查看是否与模型的要求匹配
-        st.write(f"Input tensor shape: {input_tensor.shape}")  # 打印输入张量的形状
+    st.write(f"Input tensor shape: {input_tensor.shape}")  # 打印输入张量的形状
 
     if st.button("⭐ 收藏这张图片"):
         favs = load_favorites()
