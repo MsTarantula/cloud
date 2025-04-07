@@ -24,11 +24,11 @@ classes = {
 }
 class_keys = list(classes.keys())
 
-# 图片预处理
+# 图片预处理函数
 def preprocess(img):
-    img = img.resize((224, 224)).convert('RGB')  # 修改为你的输入尺寸
-    arr = np.array(img) / 255.0
-    return np.expand_dims(arr, axis=0)
+    img = img.resize((224, 224)).convert('RGB')  # 修改为模型输入尺寸，确保RGB通道
+    arr = np.array(img) / 255.0  # 归一化处理
+    return np.expand_dims(arr, axis=0)  # 添加批次维度
 
 # 收藏功能
 def load_favorites():
