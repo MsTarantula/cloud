@@ -24,10 +24,9 @@ classes = {
 }
 class_keys = list(classes.keys())
 
-# 图片预处理函数
 def preprocess(img):
-    img = img.resize((224, 224)).convert('RGB')  # 修改为模型输入尺寸，确保RGB通道
-    arr = np.array(img) / 255.0  # 归一化处理
+    img = img.resize((100, 100)).convert('RGB')  # 将尺寸修改为 (100, 100)
+    arr = np.array(img) / 255.0  # 归一化
     return np.expand_dims(arr, axis=0)  # 添加批次维度
 
 # 收藏功能
