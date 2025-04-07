@@ -41,10 +41,34 @@ def save_favorites(data):
         json.dump(data, f)
 
 # UI 部分
-st.set_page_config(page_title="云朵识别", layout="centered")
+st.set_page_config(page_title="云朵识别", page_icon="☁️", layout="wide")
 st.title("☁️ 云朵识别小工具")
 
 uploaded = st.file_uploader("上传一张云朵图片", type=['jpg', 'png'])
+
+st.markdown("""
+<style>
+.big-font {
+    font-size:30px;
+    color: #4CAF50;
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown('<p class="big-font">欢迎使用云朵识别工具！</p>', unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    uploaded = st.file_uploader("上传一张云朵图片", type=['jpg', 'png'])
+
+with col2:
+    if uploaded:
+        st.image(uploaded, caption="上传的图片", use_container_width=True)
+
+with st.spinner('正在识别...'):
+    pred = model.predict(input_tensor)[0]
+
+
 
 
 if uploaded:
@@ -54,8 +78,21 @@ if uploaded:
     if st.button("开始识别"):
         input_tensor = preprocess(image)
         
+    st.toast("✅ 已添加到收藏夹")
+        
         # 打印输入张量的形状，查看是否与模型的要求匹配
         st.write(f"Input tensor shape: {input_tensor.shape}")  # 打印输入张量的形状
+
+    if st.button("⭐ 收藏这张图片"):
+        favs = load_favorites()
+        favs.append({
+           "label": label,
+           "code": label_key,
+           "confidence": round(confidence, 2),
+           "image_name": uploaded.name
+    })
+    save_favorites(favs)
+
         
         # 进行预测
         try:
@@ -71,8 +108,6 @@ if uploaded:
             st.error(f"发生错误: {str(e)}")
 
 
-
-# 收藏夹
 with st.expander("📂 查看收藏夹"):
     favorites = load_favorites()
     if favorites:
