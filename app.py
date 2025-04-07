@@ -50,7 +50,7 @@ uploaded = st.file_uploader("上传一张云朵图片", type=['jpg', 'png'])
 
 if uploaded:
     image = Image.open(uploaded)
-    st.image(image, caption="上传的图片", use_column_width=True)
+    st.image(image, caption="上传的图片", use_container_width=True)
 
     if st.button("开始识别"):
         input_tensor = preprocess(image)
