@@ -94,18 +94,20 @@ if uploaded:
     save_favorites(favs)
 
         
-        # 进行预测
-        try:
-            pred = model.predict(input_tensor)[0]
-            idx = int(np.argmax(pred))
-            label_key = class_keys[idx]
-            label = classes[label_key]
-            confidence = float(pred[idx])
+# 进行预测
+try:
+    pred = model.predict(input_tensor)[0]  # 获取预测结果
+    idx = int(np.argmax(pred))  # 获取最大概率的索引
+    label_key = class_keys[idx]  # 获取类别的键
+    label = classes[label_key]  # 获取类别名称
+    confidence = float(pred[idx])  # 获取置信度
 
-            st.success(f"识别结果：{label}（{label_key}）")
-            st.write(f"置信度：{confidence*100:.2f}%")
-        except Exception as e:
-            st.error(f"发生错误: {str(e)}")
+    # 显示预测结果和置信度
+    st.success(f"识别结果：{label}（{label_key}）")
+    st.write(f"置信度：{confidence*100:.2f}%")
+except Exception as e:
+    # 捕获错误并显示
+    st.error(f"发生错误: {str(e)}")
 
 
 with st.expander("📂 查看收藏夹"):
